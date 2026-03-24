@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ResumeAI — Analisador de Currículo com Inteligência Artificial
 
-## Getting Started
+ResumeAI é um analisador de currículo inteligente. Você pode fazer o upload do seu currículo em PDF ou colar o texto, anexar os detalhes de uma vaga e obter uma análise detalhada usando Inteligência Artificial. A análise retorna um score geral, métricas sobre como seu currículo se comporta num ATS, aderência à vaga, clareza, e te dá sugestões práticas.
 
-First, run the development server:
+## Tecnologias
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Frontend**: Next.js 14 (App Router), React, TypeScript, TailwindCSS, shadcn/ui.
+- **Gráficos**: Recharts.
+- **Gerenciamento de Estado**: Zustand.
+- **Backend**: Next API Routes.
+- **Integração de IA**: Suporte a OpenAI (`gpt-4o`) e Anthropic (`claude-3.5-sonnet`) dependendo da variável `AI_PROVIDER`.
+- **Processamento de Arquivos**: `pdf-parse` para extração de dados do PDF na API route.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Como começar
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Pré-requisitos
+- Node.js >= 18.x
+- NPM / Yarn / PNPM
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Instalação
 
-## Learn More
+1. Clone o repositório ou faça o download:
+   ```bash
+   git clone <URL>
+   cd analisador-de-curriculo
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Configure as variáveis de ambiente baseadas no `.env.example`:
+   Crie um arquivo `.env.local` na raiz do projeto e adicione a chave da IA escolhida.
+   ```bash
+   cp .env.example .env.local
+   ```
+   **Opções para AI_PROVIDER:** `openai` ou `anthropic`. Certifique-se de preencher a respectiva `API_KEY`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Execute o ambiente de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+5. Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Telas
+> _Telas do projeto virão aqui em breve._
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Funcionalidades
+- Upload de PDF para leitura de currículos.
+- Extração de texto para enviar para a API da IA.
+- Gráfico de Radar de qualidade do currículo e fit com a vaga.
+- Exibição de habilidades esperadas vs. encontradas com crachás visuais.
+
+## Como configurar a chave de API
+Para utilizar a API do OpenAI (padrão) ou Anthropic, cadastre-se no site respectivo, gere uma _secret key_, e insira dentro do seu arquivo `.env.local` correspondente sem aspas. A API route fará uso seguro dessas credenciais via backend.
