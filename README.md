@@ -1,6 +1,6 @@
-# ResumeAI — Analisador de Currículo com Inteligência Artificial
+# LapidaAI — Analisador de Currículo com Inteligência Artificial
 
-ResumeAI é um analisador de currículo inteligente. Você pode fazer o upload do seu currículo em PDF ou colar o texto, anexar os detalhes de uma vaga e obter uma análise detalhada usando Inteligência Artificial. A análise retorna um score geral, métricas sobre como seu currículo se comporta num ATS, aderência à vaga, clareza, e te dá sugestões práticas.
+LapidaAI é um analisador de currículo inteligente. Você pode fazer o upload do seu currículo em PDF ou colar o texto, anexar os detalhes de uma vaga e obter uma análise detalhada usando Inteligência Artificial. A análise retorna um score geral, métricas sobre como seu currículo se comporta num ATS, aderência à vaga, clareza, e te dá sugestões práticas.
 
 ## Tecnologias
 
@@ -8,7 +8,8 @@ ResumeAI é um analisador de currículo inteligente. Você pode fazer o upload d
 - **Gráficos**: Recharts.
 - **Gerenciamento de Estado**: Zustand.
 - **Backend**: Next API Routes.
-- **Integração de IA**: Suporte a OpenAI (`gpt-4o`) e Anthropic (`claude-3.5-sonnet`) dependendo da variável `AI_PROVIDER`.
+- **Integração de IA**: Google Gemini (`gemini-2.5-flash`) — configurável via `AI_PROVIDER`.
+- **Pagamentos**: Stripe Checkout (pagamento único para acesso Premium).
 - **Processamento de Arquivos**: `pdf-parse` para extração de dados do PDF na API route.
 
 ## Como começar
@@ -19,7 +20,7 @@ ResumeAI é um analisador de currículo inteligente. Você pode fazer o upload d
 
 ### Instalação
 
-1. Clone o repositório ou faça o download:
+1. Clone o repositório:
    ```bash
    git clone <URL>
    cd analisador-de-curriculo
@@ -30,12 +31,17 @@ ResumeAI é um analisador de currículo inteligente. Você pode fazer o upload d
    npm install
    ```
 
-3. Configure as variáveis de ambiente baseadas no `.env.example`:
-   Crie um arquivo `.env.local` na raiz do projeto e adicione a chave da IA escolhida.
+3. Configure as variáveis de ambiente:
    ```bash
    cp .env.example .env.local
    ```
-   **Opções para AI_PROVIDER:** `openai` ou `anthropic`. Certifique-se de preencher a respectiva `API_KEY`.
+   Preencha as variáveis no `.env.local`:
+   - `GEMINI_API_KEY` — chave da API do Google Gemini
+   - `AI_PROVIDER` — `google` (ou `openai`)
+   - `STRIPE_SECRET_KEY` — chave secreta do Stripe
+   - `STRIPE_PRICE_ID` — ID do preço do produto no Stripe
+   - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` — chave pública do Stripe
+   - `NEXT_PUBLIC_BASE_URL` — URL base do site
 
 4. Execute o ambiente de desenvolvimento:
    ```bash
@@ -44,14 +50,30 @@ ResumeAI é um analisador de currículo inteligente. Você pode fazer o upload d
 
 5. Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
 
-## Telas
-> _Telas do projeto virão aqui em breve._
-
 ## Funcionalidades
+
 - Upload de PDF para leitura de currículos.
-- Extração de texto para enviar para a API da IA.
+- Análise com IA (comparativa com vaga ou análise geral).
 - Gráfico de Radar de qualidade do currículo e fit com a vaga.
 - Exibição de habilidades esperadas vs. encontradas com crachás visuais.
+- Plano de Ação Premium com recomendações detalhadas.
+- Pagamento único via Stripe Checkout para desbloquear o Premium.
+- Limite de 1 análise gratuita por sessão.
 
-## Como configurar a chave de API
-Para utilizar a API do OpenAI (padrão) ou Anthropic, cadastre-se no site respectivo, gere uma _secret key_, e insira dentro do seu arquivo `.env.local` correspondente sem aspas. A API route fará uso seguro dessas credenciais via backend.
+## Deploy na Vercel
+
+1. Faça push do projeto para um repositório GitHub.
+2. Acesse [vercel.com](https://vercel.com) e importe o repositório.
+3. Em **Environment Variables**, adicione todas as variáveis do `.env.example` com os valores de produção:
+   - Use chaves **LIVE** do Stripe (`sk_live_`, `pk_live_`) em produção.
+   - Defina `NEXT_PUBLIC_BASE_URL` com o domínio final (ex: `https://lapidaai.vercel.app`).
+4. Clique em **Deploy**.
+5. Após o deploy, copie a URL gerada e atualize `NEXT_PUBLIC_BASE_URL` nas variáveis de ambiente da Vercel, depois faça um **Redeploy**.
+
+## Configuração do Stripe
+
+1. Acesse [dashboard.stripe.com/test/products](https://dashboard.stripe.com/test/products)
+2. Clique em **Add product**
+3. Nome: "LapidaAI Premium", Preço: R$ 9,90 (BRL), one-time
+4. Copie o `Price ID` (`price_xxx`) e coloque no `.env.local`
+5. Cartão de teste: `4242 4242 4242 4242` | qualquer validade futura | qualquer CVC
