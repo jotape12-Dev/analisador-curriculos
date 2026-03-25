@@ -22,7 +22,7 @@ LapidaAI é um analisador de currículo inteligente. Você pode fazer o upload d
 
 1. Clone o repositório:
    ```bash
-   git clone <URL>
+   git clone https://github.com/jotape12-Dev/analisador-curriculos.git
    cd analisador-de-curriculo
    ```
 
@@ -60,20 +60,3 @@ LapidaAI é um analisador de currículo inteligente. Você pode fazer o upload d
 - Pagamento único via Stripe Checkout para desbloquear o Premium.
 - Limite de 1 análise gratuita por sessão.
 
-## Deploy na Vercel
-
-1. Faça push do projeto para um repositório GitHub.
-2. Acesse [vercel.com](https://vercel.com) e importe o repositório.
-3. Em **Environment Variables**, adicione todas as variáveis do `.env.example` com os valores de produção:
-   - Use chaves **LIVE** do Stripe (`sk_live_`, `pk_live_`) em produção.
-   - Defina `NEXT_PUBLIC_BASE_URL` com o domínio final (ex: `https://lapidaai.vercel.app`).
-4. Clique em **Deploy**.
-5. Após o deploy, copie a URL gerada e atualize `NEXT_PUBLIC_BASE_URL` nas variáveis de ambiente da Vercel, depois faça um **Redeploy**.
-
-## Configuração do Stripe
-
-1. Acesse [dashboard.stripe.com/test/products](https://dashboard.stripe.com/test/products)
-2. Clique em **Add product**
-3. Nome: "LapidaAI Premium", Preço: R$ 9,90 (BRL), one-time
-4. Copie o `Price ID` (`price_xxx`) e coloque no `.env.local`
-5. Cartão de teste: `4242 4242 4242 4242` | qualquer validade futura | qualquer CVC
