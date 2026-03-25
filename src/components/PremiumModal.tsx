@@ -122,9 +122,14 @@ export function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
 
               {/* Código PIX */}
               <div className="space-y-2">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                  Código PIX Copia e Cola
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                    Código PIX Copia e Cola
+                  </label>
+                  <span className="text-xs font-bold text-primary">
+                    Valor: R$ {PIX_CONFIG.amount.toFixed(2).replace('.', ',')}
+                  </span>
+                </div>
                 <div className="flex gap-2">
                   <div className="flex-1 bg-muted/30 border border-border rounded-lg p-3 text-xs font-mono break-all max-h-20 overflow-y-auto select-all">
                     {pixPayload}
@@ -144,11 +149,7 @@ export function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
                 </div>
               </div>
 
-              <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 text-center">
-                <p className="text-xs font-semibold text-amber-600 dark:text-amber-400">
-                  Valor: R$ {PIX_CONFIG.amount.toFixed(2).replace('.', ',')} • Chave: {PIX_CONFIG.key}
-                </p>
-              </div>
+
             </>
           )}
         </div>
