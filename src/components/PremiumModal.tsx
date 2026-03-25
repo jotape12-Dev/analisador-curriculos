@@ -71,7 +71,7 @@ export function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
         alert("Erro ao gerar PIX: " + (data.error || "A chave do Mercado Pago não foi configurada."));
         setStep("benefits");
       }
-    } catch (err) {
+    } catch {
       alert("Erro de conexão ao gerar PIX.");
       setStep("benefits");
     } finally {
