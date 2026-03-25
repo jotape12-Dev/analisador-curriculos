@@ -14,7 +14,6 @@ export function Navbar() {
   const router = useRouter();
   const { isPremium, user, setUser, setProfile } = useAnalysisStore();
   const [isPremiumModalOpen, setPremiumModalOpen] = useState(false);
-  const [isCheckoutLoading, setIsCheckoutLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -50,27 +49,6 @@ export function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleCheckout = async () => {
-    setIsCheckoutLoading(true);
-    try {
-      const res = await fetch('/api/stripe/create-checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ origin: '/' })
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert(data.error || 'Erro ao iniciar o pagamento.');
-        setIsCheckoutLoading(false);
-      }
-    } catch {
-      alert('Erro de conexão com o servidor de pagamento.');
-      setIsCheckoutLoading(false);
-    }
-  };
-
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
     setUser(null);
@@ -84,8 +62,6 @@ export function Navbar() {
       <PremiumModal
         isOpen={isPremiumModalOpen}
         onClose={() => setPremiumModalOpen(false)}
-        onCheckout={handleCheckout}
-        isLoading={isCheckoutLoading}
       />
 
       <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, Suspense } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAnalysisStore } from "@/store/analysisStore";
 import { ScoreCard } from "@/components/ScoreCard";
@@ -8,6 +8,7 @@ import { RecommendationItem } from "@/components/RecommendationItem";
 import { SkillBadge } from "@/components/SkillBadge";
 import { AnalysisRadarChart } from "@/components/AnalysisRadarChart";
 import { PremiumGate } from "@/components/PremiumGate";
+import { PremiumModal } from "@/components/PremiumModal";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorMessage } from "@/components/ErrorMessage";
@@ -18,6 +19,7 @@ function ResultadoContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { result, status, errorMessage, reset, isPremium, setPremium } = useAnalysisStore();
+  const [isPremiumModalOpen, setPremiumModalOpen] = useState(false);
 
   useEffect(() => {
     if (searchParams.get('premium') === 'true') {
@@ -36,19 +38,7 @@ function ResultadoContent() {
     router.push("/");
   };
 
-  const handleCheckout = async () => {
-    try {
-      const res = await fetch('/api/stripe/create-checkout', { method: 'POST' });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert(data.error || 'Erro ao iniciar o pagamento.');
-      }
-    } catch {
-      alert('Erro de conexão com o servidor de pagamento.');
-    }
-  };
+
 
   if (status === "error" && errorMessage) {
     return (
@@ -236,13 +226,14 @@ function ResultadoContent() {
                   </Card>
                 )
               ) : (
-                <PremiumGate onUnlock={handleCheckout} />
+                <PremiumGate onUnlock={() => setPremiumModalOpen(true)} />
               )}
             </div>
           </div>
 
         </div>
       </div>
+      <PremiumModal isOpen={isPremiumModalOpen} onClose={() => setPremiumModalOpen(false)} />
     </main>
   );
 }

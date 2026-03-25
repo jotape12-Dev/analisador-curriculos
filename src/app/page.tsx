@@ -22,7 +22,7 @@ function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isPremiumModalOpen, setPremiumModalOpen] = useState(false);
-  const [isCheckoutLoading, setIsCheckoutLoading] = useState(false);
+
 
   const analysisCount = profile?.analysis_count ?? 0;
   const hasReachedLimit = !isPremium && analysisCount >= FREE_LIMIT;
@@ -38,26 +38,7 @@ function Home() {
     setFile(null);
   };
 
-  const handleCheckout = async () => {
-    setIsCheckoutLoading(true);
-    try {
-      const res = await fetch('/api/stripe/create-checkout', { 
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ origin: '/' })
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert(data.error || 'Erro ao iniciar o pagamento.');
-        setIsCheckoutLoading(false);
-      }
-    } catch {
-      alert('Erro de conexão com o servidor de pagamento.');
-      setIsCheckoutLoading(false);
-    }
-  };
+
 
   const handleAnalyze = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -131,8 +112,6 @@ function Home() {
       <PremiumModal 
         isOpen={isPremiumModalOpen} 
         onClose={() => setPremiumModalOpen(false)} 
-        onCheckout={handleCheckout} 
-        isLoading={isCheckoutLoading} 
       />
 
       <main className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
