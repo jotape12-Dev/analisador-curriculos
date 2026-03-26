@@ -49,7 +49,8 @@ export async function POST(req: Request) {
     });
   } catch (error: unknown) {
     console.error('[MP CREATE] Erro ao criar pix:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    // Transforma o erro em string, mesmo que seja um objeto complexo do Mercado Pago
+    const errorMessage = error instanceof Error ? error.message : JSON.stringify(error);
     return NextResponse.json({ 
       error: 'Erro interno na integração.', 
       details: errorMessage
