@@ -5,10 +5,10 @@ import { MercadoPagoConfig, Payment } from 'mercadopago';
 export async function POST(req: Request) {
   try {
     const authHeader = req.headers.get('Authorization');
-    const token = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : undefined;
+    const bearerToken = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : undefined;
     
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser(token);
+    const { data: { user } } = await supabase.auth.getUser(bearerToken);
 
     if (!user) {
       return NextResponse.json({ error: 'Faça login para continuar.' }, { status: 401 });
