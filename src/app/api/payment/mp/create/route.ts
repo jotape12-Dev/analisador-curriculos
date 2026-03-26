@@ -47,8 +47,11 @@ export async function POST(req: Request) {
       qr_code_base64,
       payment_id
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('[MP CREATE] Erro ao criar pix:', error);
-    return NextResponse.json({ error: 'Erro interno na integração.' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Erro interno na integração.', 
+      details: error.message || String(error) 
+    }, { status: 500 });
   }
 }
