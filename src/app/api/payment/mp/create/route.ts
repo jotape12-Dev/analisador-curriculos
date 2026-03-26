@@ -2,10 +2,13 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 
-export async function POST() {
+export async function POST(req: Request) {
   try {
+    const authHeader = req.headers.get('Authorization');
+    const token = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : undefined;
+    
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser(token);
 
     if (!user) {
       return NextResponse.json({ error: 'Faça login para continuar.' }, { status: 401 });

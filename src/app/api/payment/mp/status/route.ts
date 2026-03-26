@@ -11,14 +11,16 @@ export async function GET(req: Request) {
       return NextResponse.json({ status: 'pending' });
     }
 
-    const token = process.env.MERCADOPAGO_ACCESS_TOKEN;
-    if (!token) return NextResponse.json({ status: 'pending' });
+    const mpAccessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
+    if (!mpAccessToken) return NextResponse.json({ status: 'pending' });
 
-    const client = new MercadoPagoConfig({ accessToken: token });
-    const paymentAPI = new Payment(client);
-
+    const authHeader = req.headers.get('Authorization');
+    const token = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : undefined;
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser(token);
+
+    const client = new MercadoPagoConfig({ accessToken: mpAccessToken });
+    const paymentAPI = new Payment(client);
 
     // Consultando pagamento direto no Mercado Pago
     const response = await paymentAPI.get({ id: Number(paymentId) });
