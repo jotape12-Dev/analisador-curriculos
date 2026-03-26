@@ -7,7 +7,7 @@ import { useTheme } from "next-themes";
 import { useAnalysisStore } from "@/store/analysisStore";
 import { Button } from "@/components/ui/button";
 import { PremiumModal } from "@/components/PremiumModal";
-import { Moon, Sun, FileText, LogOut, User } from "lucide-react";
+import { Moon, Sun, FileText, LogOut, User, Crown } from "lucide-react";
 
 export function Navbar() {
   const { theme, setTheme } = useTheme();
@@ -77,20 +77,16 @@ export function Navbar() {
               </Link>
             </nav>
 
-            {!isPremium ? (
+            {!isPremium && (
               <Button
                 variant="outline"
                 size="sm"
-                className="gap-1.5 border-amber-500/30 hover:border-amber-500/60 hover:bg-amber-500/10 transition-all text-xs font-bold"
+                className="gap-1.5 border-amber-500/30 hover:border-amber-500/60 hover:bg-amber-500/10 transition-all text-xs font-bold text-amber-600 dark:text-amber-400"
                 onClick={() => setPremiumModalOpen(true)}
               >
                 <span className="text-sm">⭐</span>
                 Premium
               </Button>
-            ) : (
-              <div className="px-3 py-1.5 bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 font-bold rounded-md text-xs flex items-center gap-1.5">
-                <span className="text-sm">⭐</span> Premium
-              </div>
             )}
 
             {mounted && (
@@ -127,12 +123,18 @@ export function Navbar() {
                   <span className="text-xs font-medium max-w-[100px] truncate hidden sm:block">
                     {user.name || user.email}
                   </span>
+                  {isPremium && (
+                    <Crown className="h-3.5 w-3.5 text-amber-500 fill-amber-500 -ml-1" />
+                  )}
                 </button>
 
                 {menuOpen && (
                   <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-zinc-950 border border-border rounded-xl shadow-xl p-2 animate-in fade-in zoom-in-95 duration-150 z-[100]">
                     <div className="px-3 py-2 border-b border-border/50 mb-1">
-                      <p className="text-sm font-semibold truncate">{user.name || "Usuário"}</p>
+                      <div className="flex items-center gap-1.5">
+                        <p className="text-sm font-semibold truncate">{user.name || "Usuário"}</p>
+                        {isPremium && <Crown className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />}
+                      </div>
                       <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                     </div>
                     <button

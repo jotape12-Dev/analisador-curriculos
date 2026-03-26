@@ -36,6 +36,7 @@ export async function POST(req: Request) {
     
     const qr_code = response.point_of_interaction?.transaction_data?.qr_code;
     const qr_code_base64 = response.point_of_interaction?.transaction_data?.qr_code_base64;
+    const ticket_url = response.point_of_interaction?.transaction_data?.ticket_url;
     const payment_id = response.id;
 
     if (!qr_code || !payment_id) {
@@ -45,6 +46,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       qr_code,
       qr_code_base64,
+      ticket_url,
       payment_id
     });
   } catch (error: unknown) {
