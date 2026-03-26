@@ -95,7 +95,15 @@ export default function LoginPage() {
           </Button>
 
           <p className="text-center text-xs text-muted-foreground pt-2">
-            Ao continuar, você concorda com nossos termos de uso.
+            Ao continuar, você concorda com nossos{" "}
+            <a 
+              href="https://west-countess-f4d.notion.site/Pol-tica-de-Privacidade-LapidaAI-32fc6b9cebbe807fb0d5e8966a22e4cc?source=copy_link" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="underline hover:text-primary transition-colors cursor-pointer"
+            >
+              termos de uso
+            </a>.
           </p>
         </CardContent>
       </Card>
